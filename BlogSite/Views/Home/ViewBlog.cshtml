@@ -1,0 +1,49 @@
+﻿@using BlogSite.Data
+@using BlogSite.Models
+
+@model ViewBlogViewModel
+
+
+<div class="row">
+    <div class="col-lg-8">
+        <h1>@Model.Post.Title</h1>
+        <p class="lead">
+            by Avrumi Friedman
+        </p>
+        <hr>
+        <p><span class="glyphicon glyphicon-time"></span> Posted on @Model.Post.DateCreated.ToLongDateString()</p>
+        <hr>
+        <p class="lead">
+            @foreach (string paragraph in Model.Post.Content.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries))
+            {
+            <p>@paragraph</p>
+            }
+            </p>
+            <hr>
+            <div class="well">
+                <h4>Leave a Comment:</h4>
+                <form role="form" method="post" action="/home/addcomment">
+                    <input type="hidden" value="@Model.Post.Id" name="postId" />
+                    <input type="text" placeholder="Please enter your name" class="form-control" name="name" value="@Model.CommenterName" />
+                    <br />
+                    <div class="form-group">
+                        <textarea name="content" class="form-control" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <hr>
+            @foreach (Comment comment in Model.Comments)
+            {
+                <div class="media">
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            @comment.Name
+                            <small>@comment.DateCreated.ToLongDateString() @comment.DateCreated.ToShortTimeString()</small>
+                        </h4>
+                        @comment.Content
+                    </div>
+                </div>
+            }
+        </div>
+    </div>

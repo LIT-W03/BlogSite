@@ -1,0 +1,51 @@
+﻿@using BlogSite.Data
+@using BlogSite.Models
+@model HomePageViewModel
+
+
+<div class="row">
+
+    <!-- Blog Entries Column -->
+    <div class="col-md-8">
+
+        <h1 class="page-header">
+            Avrumi Friedmans Ramblings
+            <br />
+            <small>Don't waste your time reading this!</small>
+        </h1>
+        
+        @foreach (BlogPost post in Model.Posts)
+        {
+            <h2>
+                <a href="/home/viewblog?id=@post.Id">@post.Title</a>
+            </h2>
+            <p class="lead">
+                by Avrumi Friedman
+            </p>
+            <p><span class="glyphicon glyphicon-time"></span> Posted on @post.DateCreated.ToLongDateString()
+            </p>
+            <hr>
+            <p>@(post.Content.Length < 200 ? post.Content : post.Content.Substring(0,200) + "....." )</p>
+            <a class="btn btn-primary" href="/home/viewblog?id=@post.Id">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+
+            <hr>
+        }
+        <!-- Pager -->
+        <ul class="pager">
+            @if (Model.PreviousPage.HasValue)
+            {
+                <li class="previous">
+                    <a href="/home/index?page=@Model.PreviousPage">&larr; Older</a>
+                </li>
+            }
+            @if (Model.NextPage.HasValue)
+            {
+                <li class="next">
+                    <a href="/home/index?page=@Model.NextPage.Value">Newer &rarr;</a>
+                </li>
+            }
+        </ul>
+
+    </div>
+
+</div>
